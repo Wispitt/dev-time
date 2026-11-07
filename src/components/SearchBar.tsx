@@ -1,5 +1,5 @@
 import { searchBarStyles } from "@/styles/searchBar.styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextInput, TouchableOpacity, View, Text } from "react-native";
 
 interface SearchBarProps {
@@ -15,11 +15,15 @@ export default function SearchBar({ onSearch, loading = false }: SearchBarProps)
         if (!searchText) {
             setErrorText(true);
             return ;
-        } else {
-            setErrorText(false);
-            onSearch(searchText);
-        }
+        } 
+        onSearch(searchText);
     };
+
+    useEffect(() => {
+        if(searchText) {
+            setErrorText(false)
+        }
+    }, [searchText]);
 
     return (
         <View style={searchBarStyles.container}>
@@ -28,7 +32,7 @@ export default function SearchBar({ onSearch, loading = false }: SearchBarProps)
                     <TextInput 
                     value={searchText}
                     onChangeText={setSearchText}
-                    placeholder="Digite uma cidade..."
+                    placeholder="São Paulo, Rio de Janeiro..."
                     placeholderTextColor='#999'
                     autoCapitalize="words"
                     autoCorrect

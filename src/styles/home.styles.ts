@@ -15,6 +15,8 @@ export const homeStyles = StyleSheet.create({
         paddingTop: spacing.xl,
         paddingBottom: spacing.md,
         paddingHorizontal: spacing.md,
+        flexDirection: 'column',
+        alignItems: 'center'
     },
 
     title: {

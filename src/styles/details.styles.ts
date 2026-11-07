@@ -46,6 +46,20 @@ export const detailsStyles = StyleSheet.create({
         paddingVertical: spacing.xl * 2
     },
 
+    errorContainer: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 20,
+        flexDirection: 'column'
+    },
+
+    error: {
+        fontSize: spacing.lg,
+        color: colors.error,
+    },
+
     loadingText: {
         ...typography.body,
         color: colors.textSecondary,
