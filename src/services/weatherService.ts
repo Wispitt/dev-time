@@ -15,7 +15,7 @@ const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL
 const api = axios.create({
     baseURL: BASE_URL,
     params: {
-        ppid: API_KEY,
+        appid: API_KEY,
         lang: 'pt_br',
         units: 'metric',
     },
@@ -24,10 +24,33 @@ const api = axios.create({
         'Content-Type': 'application/json',
     }
 });
-console.log('BASE_URL:', BASE_URL);
-console.log('API_KEY existe:', !!API_KEY);
-console.log('Chave atual:', API_KEY?.slice(0, 5));
-console.log('Tamanho da chave:', API_KEY?.length);
+
+const getErrorMenssage = (statusCode: number): string => {
+    switch(statusCode) {
+        case 400:
+        
+            return 'Requisição inválida';
+        case 401:
+        
+            return 'Error no sistema';
+        case 404:
+        
+            return 'Cidade não encontrada';
+        case 429:
+        
+            return 'Servidor sobrecarregado, tente novamente mais tarde';
+        case 500:
+        
+            return 'Erro interno do servidor';
+        case 503:
+        
+            return 'Servidor temporariamente indisponível';
+        default:
+
+            return 'Error ao buscar clima, tente novamente mais tarde';
+    }
+}
+
 export const getCurrentWeather = async (cityName: string): Promise<WeatherResult> => {
     try {
         const trimmedCity = cityName.trim();
@@ -35,7 +58,7 @@ export const getCurrentWeather = async (cityName: string): Promise<WeatherResult
 
             return {
                 success: false,
-                error: 'City not found'
+                error: 'Cidade não encontrada'
             };
         };
 
@@ -44,7 +67,7 @@ export const getCurrentWeather = async (cityName: string): Promise<WeatherResult
                 q: trimmedCity
             }
         });
-        console.log(response.data)
+
         return {
             success: true,
             data: response.data
@@ -52,17 +75,28 @@ export const getCurrentWeather = async (cityName: string): Promise<WeatherResult
 
     } catch (err) {
         if (axios.isAxiosError(err)) {
-            console.log('Mensagem:', err.message);
-            console.log('URL:', err.config?.baseURL);
-            console.log('Código:', err.code);
-            console.log('Resposta:', err.response?.data);
-        } else {
-            console.log('Erro inesperado:', err);
-        }
+
+            if (err.response) {
+                return {
+                    success: false,
+                    error: getErrorMenssage(err.response.status)
+                }
+            } else if(err.request) {
+                return {
+                    success: false,
+                    error: 'Sem conexão com o servidor'
+                };
+            } else {
+                return {
+                    success: false,
+                    error: 'Error ao buscar clima, tente novamente mais tarde'
+                };
+            }
+        } 
 
         return {
             success: false,
-            error: 'Erro ao buscar clima. Tente novamente'
+            error: 'Error ao buscar clima, tente novamente mais tarde'
         };
     };
 };

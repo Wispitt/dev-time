@@ -16,7 +16,9 @@ export default function Details() {
 
     const getWeatherData = async () => {
         setLoading(true);
+        setError(null)
         const result = await getCurrentWeather(cityName as string);
+
         setLoading(false);
 
         if (result.success) {
@@ -50,21 +52,31 @@ export default function Details() {
                 </TouchableOpacity>
 
                 <View style={detailsStyles.header}>
-                    <Text style={detailsStyles.subTitle}>Clima atual</Text>
+                    <Text style={detailsStyles.title}>Clima atual</Text>
                     {loading && (<Text style={detailsStyles.subTitle}>Buscando: {cityName} </Text>)}
                 </View>
 
                 <View>
-                    {loading && error ? (
+                    {loading && (
                         <View style={detailsStyles.loadingContainer}>
                             <ActivityIndicator size='large' color='#000' />
                             <Text style={detailsStyles.loadingText}>Carregando...</Text>
                         </View>
+                    )}
+                    {error && !error.includes('tente novamente') ? (
+                        <View style={detailsStyles.errorContainer}>
+                            <Text style={detailsStyles.error}> {error}</Text>
+                            <Text
+                                onPress={handleReload}
+                                selectable={false}
+                                suppressHighlighting={true}
+                                style={detailsStyles.buttonTryAgainError}>tente novamente
+                            </Text>
+
+                        </View>
                     ) : (
                         <View style={detailsStyles.errorContainer}>
-                            <Text 
-                            style={detailsStyles.error}>Erro ao buscar clima. {''}
-                            <Text onPress={handleReload} style={{textDecorationLine: 'underline'}}>Tente novamente</Text></Text> 
+                            <Text style={detailsStyles.error}> {error} </Text>
                         </View>
                     )}
                 </View>

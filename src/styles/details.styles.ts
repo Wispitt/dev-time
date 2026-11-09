@@ -46,23 +46,32 @@ export const detailsStyles = StyleSheet.create({
         paddingVertical: spacing.xl * 2
     },
 
-    errorContainer: {
-        width: '100%',
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 20,
-        flexDirection: 'column'
-    },
-
-    error: {
-        fontSize: spacing.lg,
-        color: colors.error,
-    },
-
     loadingText: {
         ...typography.body,
         color: colors.textSecondary,
         marginTop: spacing.md,
-    }
+    },
+
+    errorContainer: {
+        flex: 1,
+        height: '100vh',
+        paddingVertical: 20,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 10
+    },
+
+    error: {
+        fontSize: 24,
+        color: colors.error,
+        textAlign: 'center',
+        fontWeight: '600'
+    },
+
+    buttonTryAgainError: {
+        textDecorationLine: 'underline',
+        fontWeight: 'bold',
+        fontSize: spacing.lg,
+    },
 });

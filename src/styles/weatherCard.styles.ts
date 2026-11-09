@@ -4,7 +4,14 @@ import { colors, spacing, typography } from "./colors";
 export const weatherCardStyles = StyleSheet.create({
     card: {
         backgroundColor: colors.cardBackground,
-        borderRadius: 16,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: -2,
+            height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        borderRadius: 30,
         padding: spacing.lg,
         marginHorizontal: spacing.md,
         marginVertical: spacing.sm,

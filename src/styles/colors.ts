@@ -32,7 +32,7 @@ export const spacing = {
 
 export const typography = {
   title: {
-    fontSize: 30,
+    fontSize: 44,
     fontWeight: '700' as const,
   },
   subtitle: {

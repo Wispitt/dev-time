@@ -34,7 +34,7 @@ export const searchBarStyles = StyleSheet.create({
         backgroundColor: colors.cardBackground,
         borderWidth: 1,
         borderColor: colors.border,
-        borderRadius: 12,
+        borderRadius: 30,
         padding: spacing.md,
         fontSize: 16,
         color: colors.text,
@@ -46,26 +46,32 @@ export const searchBarStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.cardBackground,
         borderWidth: 1,
-        borderRadius: 12,
+        borderRadius: 30,
         padding: spacing.md,
         fontSize: 16,
         color: colors.text,
         height: 50,
     },
 
-    button: {
+    linearGradient: {
         backgroundColor: colors.primary,
-        borderRadius: 12,
-        padding: spacing.md,
-        paddingHorizontal: spacing.lg,
+        borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
         height: 50,
+        width: 110
+    },
+
+    buttoninearGradient: {
+        width: '100%',
+        height: '100%'
     },
 
     buttonText: {
         color: colors.background,
-        fontSize: 16,
+        fontSize: 17,
         fontWeight: '600',
+        textAlign: "center",
+        marginVertical: 'auto'
     }
 });

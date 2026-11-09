@@ -9,6 +9,7 @@ export const homeStyles = StyleSheet.create({
 
     container: {
         flex: 1,
+        paddingTop: 40
     },
 
     header: {
@@ -23,6 +24,7 @@ export const homeStyles = StyleSheet.create({
         ...typography.title,
         color: colors.text,
         textAlign: 'center',
+        marginLeft: 10
     },
 
     subTitle: {
@@ -32,11 +34,24 @@ export const homeStyles = StyleSheet.create({
         marginTop: spacing.xs,
     },
 
+    containerCloud: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 12,
+    },
+
+    line: {
+        flex: 0.45,
+        height: 1,
+        backgroundColor: '#94A3B8',
+    },
+
     emptyContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: spacing.xl,
+        paddingTop: spacing.sm,
     },
 
     emptyText: {
