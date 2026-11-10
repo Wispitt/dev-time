@@ -21,7 +21,9 @@ export const weatherCardStyles = StyleSheet.create({
     cityName: {
         ...typography.title,
         color: colors.text,
-        marginBottom: spacing.xs
+        marginBottom: spacing.xs,
+        width: '100%',
+        textAlign: 'center'
     },
 
     weaherIcon: {
@@ -77,5 +79,15 @@ export const weatherCardStyles = StyleSheet.create({
     detailValue: {
         ...typography.body,
         color: colors.text
+    },
+
+    viewMinMax: {
+        flexDirection: 'row',
+        gap: 30,
+    },
+
+    tempMinMax: {
+        marginBottom: 13,
+        ...typography.caption,
     }
 });

@@ -1,5 +1,6 @@
 import { searchBarStyles } from "@/styles/searchBar.styles";
 import { LinearGradient } from "expo-linear-gradient";
+import { Search } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -44,7 +45,7 @@ export default function SearchBar({ onSearch, loading = false }: SearchBarProps)
                     />
                     {errorText && (
                         <View style={searchBarStyles.ContainerParagraphError}>
-                            <Text style={searchBarStyles.paragraphError}>Digite o nome a cidade</Text>
+                            <Text style={searchBarStyles.paragraphError}>Digite o nome da cidade</Text>
                         </View>
                     )}
                 </View>
@@ -54,14 +55,14 @@ export default function SearchBar({ onSearch, loading = false }: SearchBarProps)
                     style={searchBarStyles.linearGradient}
                     start={{ x: 0.01, y: 0.5 }}
                     end={{ x: 1, y: -0.5 }}
-                    onClick={handleSearch}
                 >
-                    <Text style={{ color: '#FFFFFF' }}>
+                    <Text>
                         <TouchableOpacity
-                        style={searchBarStyles.buttoninearGradient}
+                            style={searchBarStyles.buttonLinearGradient}
                             disabled={loading}
                             onPress={handleSearch}
                         >
+                            <Text style={searchBarStyles.searchButton}><Search color='#000000' size={22} /></Text>
                             <Text style={searchBarStyles.buttonText}> {loading ? 'Buscando...' : 'Buscar'} </Text>
                         </TouchableOpacity>
                     </Text>

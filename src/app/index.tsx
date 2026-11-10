@@ -1,13 +1,17 @@
 import SearchBar from '@/components/SearchBar';
 import { UseLocation } from '@/hooks/UseLocation';
+import { getCurrentWeatherByCoords } from '@/services/weatherService';
 import { homeStyles } from '@/styles/home.styles';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { Cloud, CloudSun } from 'lucide-react-native';
-import { SafeAreaView, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, SafeAreaView, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
-    const { getCurrentLocation } = UseLocation();
+    const { getCurrentLocation, loading } = UseLocation();
 
     const handleSearch = (cityName: string): void => {
         router.push({
@@ -17,8 +21,25 @@ export default function App() {
     };
 
     const handleLocation = async () => {
-        console.log(await getCurrentLocation())
-    }
+        setError(null);
+        const locationResult = await getCurrentLocation();
+
+        if (!locationResult.success) {
+            setError(locationResult.error);
+        } else {
+            const { latitude, longitude } = locationResult.coordinates;
+            const weatherResult = await getCurrentWeatherByCoords(latitude, longitude);
+
+            if (!weatherResult.success) {
+                setError(weatherResult.error);
+            } else {
+                router.push({
+                    pathname: '/details',
+                    params: { cityName: weatherResult.data.name }
+                });
+            }
+        }
+    };
 
     return (
         <SafeAreaView style={homeStyles.safeArea}>
@@ -38,14 +59,34 @@ export default function App() {
 
                 <View style={homeStyles.containerCloud}>
                     <View style={homeStyles.line} />
-                    <Cloud  size={26} color='#4935D5' />
+                    <Cloud size={26} color='#4935D5' />
                     <View style={homeStyles.line} />
                 </View>
 
-                <TouchableOpacity 
-                onPress={handleLocation}>
-                    <Text>Usar minha localização</Text>
-                </TouchableOpacity>
+                <LinearGradient
+                    colors={['#3828D8', '#A99AFB', '#7655ED']}
+                    style={homeStyles.linearGradient}
+                    start={{ x: 1, y: 0.5 }}
+                    end={{ x: 0.5, y: 1 }}
+                ><Text>
+                        <TouchableOpacity
+                            style={homeStyles.gpsButton}
+                            disabled={loading}
+                            onPress={handleLocation}>
+                            {loading ? (
+                                <ActivityIndicator size={'large'} style={{ marginVertical: 'auto' }} color='#000000' />
+                            ) : (
+                                <Text style={homeStyles.buttonText}>Usar minha localização</Text>
+                            )}
+                        </TouchableOpacity>
+                    </Text>
+                </LinearGradient>
+
+                {true && (
+                    <View style={homeStyles.ContainerParagraphError}>
+                        <Text style={homeStyles.paragraphError}> {error} </Text>
+                    </View>
+                )}
             </ScrollView>
         </SafeAreaView>
     );

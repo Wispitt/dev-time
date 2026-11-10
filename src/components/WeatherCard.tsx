@@ -40,6 +40,12 @@ export default function WeatherCard({ weather }: WatherBarProps) {
 
             {temperatureCurrent(Math.round(weather.main.temp))}
 
+            <View style={weatherCardStyles.viewMinMax}>
+                <Text style={weatherCardStyles.tempMinMax}>Máxima: {Math.round(weather.main.temp_max)}°C</Text>
+                <Text style={weatherCardStyles.tempMinMax}>Minima: {Math.round(weather.main.temp_min)}°C</Text>
+            </View>
+            
+
             {weather.weather[0] && <Text style={weatherCardStyles.description}>
                 {weather.weather[0].description}
             </Text>}

@@ -1,4 +1,4 @@
-import { WeatherData } from '@/types/weather';
+import { WeatherData, WeatherError } from '@/types/weather';
 import axios from 'axios';
 
 export type WeatherResult = {
@@ -26,24 +26,24 @@ const api = axios.create({
 });
 
 const getErrorMenssage = (statusCode: number): string => {
-    switch(statusCode) {
+    switch (statusCode) {
         case 400:
-        
+
             return 'Requisição inválida';
         case 401:
-        
+
             return 'Error no sistema';
         case 404:
-        
+
             return 'Cidade não encontrada';
         case 429:
-        
+
             return 'Servidor sobrecarregado, tente novamente mais tarde';
         case 500:
-        
+
             return 'Erro interno do servidor';
         case 503:
-        
+
             return 'Servidor temporariamente indisponível';
         default:
 
@@ -74,14 +74,14 @@ export const getCurrentWeather = async (cityName: string): Promise<WeatherResult
         };
 
     } catch (err) {
-        if (axios.isAxiosError(err)) {
+        if (axios.isAxiosError<WeatherError>(err)) {
 
             if (err.response) {
                 return {
                     success: false,
                     error: getErrorMenssage(err.response.status)
                 }
-            } else if(err.request) {
+            } else if (err.request) {
                 return {
                     success: false,
                     error: 'Sem conexão com o servidor'
@@ -92,13 +92,51 @@ export const getCurrentWeather = async (cityName: string): Promise<WeatherResult
                     error: 'Error ao buscar clima, tente novamente mais tarde'
                 };
             }
-        } 
+        }
 
         return {
             success: false,
             error: 'Error ao buscar clima, tente novamente mais tarde'
         };
     };
+};
+
+export const getCurrentWeatherByCoords = async (
+    latitude: number,
+    longitude: number)
+    : Promise<WeatherResult> => {
+    try {
+        const response = await api.get<WeatherData>('/weather', {
+            params: {
+                lat: latitude,
+                lon: longitude
+            }
+        });
+
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (err) {
+        if (axios.isAxiosError<WeatherError>(err)) {
+            if (err.response) {
+                return {
+                    success: false,
+                    error: getErrorMenssage(err.response.status)
+                };
+            } else if (err.request) {
+                return {
+                    success: false,
+                    error: 'Sem conexão com o servidor, tente novamente'
+                }
+            }
+        } 
+    }
+
+    return {
+        success: false,
+        error: 'Erro ao buscar clima'
+    }
 };
 
 export const getWeatherIcon = (iconCode: string): string => {
